@@ -6,6 +6,8 @@ import { XoaVTKhoByID } from "../../../services/ViTriKho/XoaViTriKho";
 import { FormXacNhan } from "../../FormXacNhan/FormXacNhan";
 
 import httpClient from "../../../utils/axiosInstance";
+import { Messeage_ViTriKho_04 } from "../../../Messeages/Messeages";
+import { Messeage_ViTriKho_05 } from "../../../Messeages/Messeages";
 
 const CTKho = ({ error,success,setToggle, ChiTietKhoResponse, idKho, ChiTietKhoCall }) => {
     const { xoaVTKhoResponse, xoaVTKhoError, xoaVTKhoLoading, callXoaVTKho } = XoaVTKhoByID();
@@ -29,11 +31,11 @@ const CTKho = ({ error,success,setToggle, ChiTietKhoResponse, idKho, ChiTietKhoC
 
     useEffect(()=>{
         if(xoaVTKhoResponse){
-            success('Xóa vị trí kho thành công')
+            success(Messeage_ViTriKho_04)
             handleCallRefetch();
         }
         if(xoaVTKhoError){
-            error('Không thể xóa vị trí Kho')
+            error(Messeage_ViTriKho_05)
         }
     },[xoaVTKhoResponse,xoaVTKhoError])
 

@@ -27,7 +27,7 @@ import ThongKeSanPhamXuat from '../../components/ThongKe/ThongKeSanPhamXuat';
 import ThongKeTienNhap from '../../components/ThongKe/ThongKeTienNhap';
 import ThongKeTienXuat from '../../components/ThongKe/ThongKeTienXuat';
 
-
+import { Messeage_login_03 } from '../../Messeages/Messeages';
 
 
 function getItem(label, key, icon, children, type) {
@@ -108,7 +108,7 @@ const Home = () => {
         if (render) {
             setRender(false);
         } else {
-            success('Đăng nhập thành công!');
+            success(Messeage_login_03);
 
         }
     }, [render]);

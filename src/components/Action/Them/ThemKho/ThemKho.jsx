@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Form, Input } from 'antd';
 import { message } from 'antd';
 
@@ -7,6 +8,16 @@ import './ThemKho.css';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import httpClient from "../../../../utils/axiosInstance";
+
+import { Messeage_Kho_01 } from "../../../../Messeages/Messeages";
+import { Messeage_Kho_02 } from "../../../../Messeages/Messeages";
+import { Messeage_Kho_03 } from "../../../../Messeages/Messeages";
+import { Messeage_Kho_04 } from "../../../../Messeages/Messeages";
+import { Messeage_Kho_05 } from "../../../../Messeages/Messeages";
+import { Messeage_Kho_06 } from "../../../../Messeages/Messeages";
+import { Messeage_Kho_07 } from "../../../../Messeages/Messeages";
+import { Messeage_Kho_08 } from "../../../../Messeages/Messeages";
 
 
 const ThemKho = ({ setToggle, getAllKhoRefetch }) => {
@@ -20,7 +31,7 @@ const ThemKho = ({ setToggle, getAllKhoRefetch }) => {
             error();
         }
     }, [themKhoResponse, themKhoError]);
-
+    const navigate = useNavigate();
     const [messageApi, contextHolder] = message.useMessage();
     const [formData, setFormData] = useState({
         tenKho: "",
@@ -28,8 +39,47 @@ const ThemKho = ({ setToggle, getAllKhoRefetch }) => {
         address: "",
         sdt: ""
     });
-
+    const handleSubmit = (e) =>{
     
+        try{
+        {
+            httpClient.post('kho/them', formData,
+            )
+            .then(res =>{
+                console.log(res)
+                toast.success(`${res.data.message}`, {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                setTimeout(() => {
+                    setToggle(false);
+                    navigate('/')
+                }, 2000);
+            })
+            .catch(err =>{
+                toast.error(`${Messeage_Kho_08}`, {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });;
+            })
+        }
+        
+        }catch(error){
+            console.log(error);
+        }
+    }
     const success = () => {
         messageApi.open({
             type: 'success',
@@ -61,8 +111,12 @@ const ThemKho = ({ setToggle, getAllKhoRefetch }) => {
             });
         }
         else{
-            callThemKho(formData);
-            success();
+            // callThemKho(formData);
+            // success();
+            handleSubmit();
+            // setTimeout(() => {
+            //     window.location.reload();
+            // }, 2000);
         }
     }
 
@@ -87,28 +141,28 @@ const ThemKho = ({ setToggle, getAllKhoRefetch }) => {
             <Form.Item
                 label="Tên kho"
                 name="tenKho"
-                rules={[{ required: true, message: 'Nhập Tên Kho!' }]}
+                rules={[{ required: true, message:Messeage_Kho_03}]}
             >
                 <Input name="tenKho" onChange={handleChange} />
             </Form.Item>
             <Form.Item
                 label="email"
                 name="email"
-                rules={[{ required: true, message: 'Nhập email!' }]}
+                rules={[{ required: true, message:Messeage_Kho_04}]}
             >
                 <Input type="email" name="email" onChange={handleChange} />
             </Form.Item>
             <Form.Item
                 label="Địa chỉ"
                 name="address"
-                rules={[{ required: true, message: 'Nhập Địa chỉ kho!' }]}
+                rules={[{ required: true, message:Messeage_Kho_05}]}
             >
                 <Input name="address" onChange={handleChange} />
             </Form.Item>
             <Form.Item
                 label="Số điện thoại"
                 name="sdt"
-                rules={[{ required: true, message: 'Nhập Số đt!' }]}
+                rules={[{ required: true, message:Messeage_Kho_06}]}
             >
                 <Input type="number" name="sdt" onChange={handleChange} />
             </Form.Item>

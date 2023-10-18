@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Input } from 'antd';
 import { message } from 'antd';
-
 import { SuaKhoByID } from '../../../../services/Kho/SuaKho'
-import axios from "axios";
+import { ChiTietKho } from "../../../../services/Kho/ChiTietKho";
 import httpClient from "../../../../utils/axiosInstance";
 
 const SuaKho = ({ setToggle, getAllKhoRefetch,idKho }) => {
-    const [detailkho, setDetailkho] = useState({})
+    const [datakho,setDataKho] = useState({})
     const { SuaKhoResponse, SuaKhoError, callSuaKho } = SuaKhoByID();
     useEffect(() => {
         if (SuaKhoResponse) {
@@ -25,23 +24,23 @@ const SuaKho = ({ setToggle, getAllKhoRefetch,idKho }) => {
         address: "",
         sdt: ""
     });
-    console.log(idKho)
 
-    const getDetailKho = async() => {
-        const res = await httpClient.get(`kho/${idKho}`)
-        return res
-    }
     useEffect(() => {
-      
-        getDetailKho().then((res) => {
-        //   console.log(res.data.data)
-          setDetailkho(res.data.data)
+        
+        async function getData(){
+          const res = await httpClient.get(`/vitrikho/kho/${idKho}`)
+          return res
+        }
+        getData().then((res) => {
+            // console.log(res)
+            setDataKho(res)
         })
-        getDetailKho().catch((err) => {
+        getData().catch((err) => {
           console.log(err)
         })
+        console.log(1)
     },[])
-    console.log(detailkho)
+
     const success = () => {
         messageApi.open({
             type: 'success',
@@ -69,7 +68,7 @@ const SuaKho = ({ setToggle, getAllKhoRefetch,idKho }) => {
             [e.target.name]: e.target.value,
         }));
     }
-
+    console.log(datakho)
     return <>
         {contextHolder}
         <Form
@@ -79,6 +78,7 @@ const SuaKho = ({ setToggle, getAllKhoRefetch,idKho }) => {
             style={{ maxWidth: 600 }}
             autoComplete="off"
             className="Form_ADD_NV"
+            initialValues={datakho.data}
         >
             <h5>Sửa Kho</h5>
             <Form.Item
@@ -86,13 +86,12 @@ const SuaKho = ({ setToggle, getAllKhoRefetch,idKho }) => {
                 name="tenKho"
                 rules={[{ required: true, message: 'Nhập Tên Kho!' }]}
             >
-                <Input name="tenKho" onChange={handleChange} value={detailkho.tenKho}/>
+                <Input name="tenKho" onChange={handleChange} />
             </Form.Item>
             <Form.Item
                 label="email"
                 name="email"
                 rules={[{ required: true, message: 'Nhập email!' }]}
-                value = {detailkho.email}
             >
                 <Input name="email" onChange={handleChange} />
             </Form.Item>
@@ -100,7 +99,6 @@ const SuaKho = ({ setToggle, getAllKhoRefetch,idKho }) => {
                 label="Địa chỉ"
                 name="address"
                 rules={[{ required: true, message: 'Nhập Địa chỉ kho!' }]}
-                value = {detailkho.address}
             >
                 <Input name="address" onChange={handleChange} />
             </Form.Item>
@@ -108,7 +106,6 @@ const SuaKho = ({ setToggle, getAllKhoRefetch,idKho }) => {
                 label="Số điện thoại"
                 name="sdt"
                 rules={[{ required: true, message: 'Nhập Số đt!' }]}
-                value = {detailkho.sdt}
             >
                 <Input name="sdt" onChange={handleChange} />
             </Form.Item>

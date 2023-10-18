@@ -10,10 +10,17 @@ import QuenMK from '../../components/Action/quenMK/QuenMK';
 import './Login.css'
 import Header from '../../components/Header/Header';
 
+import { Messeage_login_01 } from '../../Messeages/Messeages';
+import { Messeage_login_02 } from '../../Messeages/Messeages';
+import { Messeage_login_03 } from '../../Messeages/Messeages';
+import { Messeage_login_04 } from '../../Messeages/Messeages';
+
+
+
 const Login = () => {
 
     const [messageApi, contextHolder] = message.useMessage();
-
+    const [validated, setValidated] = useState(false);
     const success = () => {
         messageApi.open({
             type: 'success',
@@ -61,7 +68,7 @@ const Login = () => {
                 navigate('/');
             }
             else {
-                error(loginResponse.message);
+                error(Messeage_login_04);
             }
         }
     }, [loginResponse])
@@ -71,6 +78,12 @@ const Login = () => {
     }
 
     const handleOnSubmit = (e) => {
+        const form = e.currentTarget;
+        if (form.checkValidity() === false) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        setValidated(true)
         e.preventDefault();
         callLoginRefetch(formData);
 
@@ -88,15 +101,21 @@ const Login = () => {
 
             <div className='background-Login'>
                 <div className='signin-layout'>
-                    <Form onSubmit={handleOnSubmit}>
+                    <Form noValidate validated={validated} onSubmit={handleOnSubmit}>
                         <h3>Đăng nhập</h3>
                         <Form.Group style={{ textAlign: 'left' }} className="mb-3" >
                             <Form.Label >Username</Form.Label>
-                            <Form.Control onChange={handleChange} name='username' type="text" placeholder="Nhập Username" />
+                            <Form.Control onChange={handleChange} name='username' type="text" placeholder="Nhập Username" required />
+                            <Form.Control.Feedback type="invalid">
+                                {Messeage_login_01}
+                            </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group style={{ textAlign: 'left' }} className="mb-3">
                             <Form.Label >Mật khẩu</Form.Label>
-                            <Form.Control onChange={handleChange} name='password' type="password" placeholder="Mật khẩu" />
+                            <Form.Control onChange={handleChange} name='password' type="password" placeholder="Mật khẩu" required />
+                            <Form.Control.Feedback type="invalid">
+                                {Messeage_login_02}
+                            </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group style={{ textAlign: 'left' }} className="mb-3">
                             <a style={{ cursor: 'pointer', textDecoration: 'underline' }} onClick={() => handleQuenMK()}>Quên mật khẩu</a>

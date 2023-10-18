@@ -49,6 +49,9 @@ const ThemPX = ({ setToggle, getAllPhieuXuatRefetch }) => {
     const [productSearch, setProductSearch] = useState()
     const [value, setValue] = useState([])
     const { getAllSanPhamResponse } = GetAllSanPhamService();
+    const sum = value.reduce((acc, value) =>{
+        return acc + parseFloat(value.gia * value.soluong);
+    },0)
     return <>
         {contextHolder}
         <div className="Form_ADD_PN">
@@ -102,6 +105,9 @@ const ThemPX = ({ setToggle, getAllPhieuXuatRefetch }) => {
                     <th>
                         Số lượng
                     </th>
+                    <th>
+                        Thành Tiền
+                    </th>
                 </tr>
 
                 {value.length > 0 && value.map((item, index) => {
@@ -115,11 +121,13 @@ const ThemPX = ({ setToggle, getAllPhieuXuatRefetch }) => {
                                 }</td>
                                 <td>{item.gia}</td>
                                 <td>{item.soluong}</td>
+                                <td>{item.soluong * item.gia}</td>
                             </tr>
                         </>
                     )
                 })}
             </table>
+            <h5 style={{marginTop:'10px'}}>Tổng Tiền : {sum}</h5>
             <div className="btn_Cancel_Submi button_Bottom">
 
                 <Button onClick={() => { setToggle(false) }} danger >

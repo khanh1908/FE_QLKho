@@ -50,6 +50,11 @@ const ThemPN = ({ setToggle, getAllPhieuNhapRefetch }) => {
     const [value, setValue] = useState([])
     const [ncc, setNCC] = useState()
     const { getAllSanPhamResponse } = GetAllSanPhamService();
+    console.log(value)
+    const sum = value.reduce((acc, value) =>{
+        return acc + parseFloat(value.gia * value.soluong);
+    },0)
+    console.log(sum)
     return <>
         {contextHolder}
         <div className="Form_ADD_PN">
@@ -78,8 +83,7 @@ const ThemPN = ({ setToggle, getAllPhieuNhapRefetch }) => {
                             id: productSearch
                         },
                         gia: e.target.price.value,
-                        soluong: e.target.quantity.value,
-                        tongtien: e.target.price.value * e.target.quantity.value
+                        soluong: e.target.quantity.value
                     }])
                 }}>
                     <div style={{ display: 'flex' ,gap: '20px'}}>
@@ -95,8 +99,8 @@ const ThemPN = ({ setToggle, getAllPhieuNhapRefetch }) => {
                                 )
                             })}
                         </select>
-                        <input placeholder="Giá" name="price" id="price" type="number" />
-                        <input placeholder="Số Lượng" name="quantity" id="quantity" type="number" />
+                        <input placeholder="Giá" name="price" id="price" type="number" required />
+                        <input placeholder="Số Lượng" name="quantity" id="quantity" type="number" required />
                         <button type="submit">Thêm</button>
                     </div>
 
@@ -112,13 +116,13 @@ const ThemPN = ({ setToggle, getAllPhieuNhapRefetch }) => {
                         Tên sản phẩm
                     </th>
                     <th>
-                        Giá
+                        Đơn Giá
                     </th>
                     <th>
                         Số lượng
                     </th>
                     <th>
-                        Tổng Tiền
+                        Thành Tiền
                     </th>
                 </tr>
 
@@ -132,12 +136,13 @@ const ThemPN = ({ setToggle, getAllPhieuNhapRefetch }) => {
                                 }</td>
                                 <td>{item.gia}</td>
                                 <td>{item.soluong}</td>
-                                <td>{item.tongtien}</td>
+                                <td>{item.soluong * item.gia}</td>
                             </tr>
                         </>
                     )
                 })}
             </table>
+            <h5 style={{marginTop:'10px'}}>Tổng Tiền : {sum}</h5>
             <div className="btn_Cancel_Submi button_Bottom">
 
                 <Button onClick={() => { setToggle(false) }} danger >
