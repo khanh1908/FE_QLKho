@@ -63,7 +63,8 @@ const ThemKho = ({ setToggle, getAllKhoRefetch }) => {
                 }, 2000);
             })
             .catch(err =>{
-                toast.error(`${Messeage_Kho_08}`, {
+                console.log(err);
+                toast.error(`${err.response.data.message}`, {
                     position: "top-right",
                     autoClose: 2000,
                     hideProgressBar: true,

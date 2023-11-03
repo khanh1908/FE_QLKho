@@ -4,6 +4,8 @@ import { message } from 'antd';
 import { SuaKhoByID } from '../../../../services/Kho/SuaKho'
 import { ChiTietKho } from "../../../../services/Kho/ChiTietKho";
 import httpClient from "../../../../utils/axiosInstance";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SuaKho = ({ setToggle, getAllKhoRefetch,idKho }) => {
     const [datakho,setDataKho] = useState({})
@@ -58,8 +60,27 @@ const SuaKho = ({ setToggle, getAllKhoRefetch,idKho }) => {
 
     const handleSuaKho = (e) => {
         e.preventDefault();
-        callSuaKho(idKho,formData);
-        success();
+        if(formData.tenKho == '' || formData.address == ''|| formData.email == '' || formData.sdt == '') {
+            toast.error('Vui lòng nhập đầy đủ thông tin', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+        else{
+            // callThemKho(formData);
+            // success();
+            callSuaKho(idKho,formData);
+            success();
+            // setTimeout(() => {
+            //     window.location.reload();
+            // }, 2000);
+        }
     }
 
     const handleChange = (e) => {
@@ -122,6 +143,18 @@ const SuaKho = ({ setToggle, getAllKhoRefetch,idKho }) => {
                 </Button>
             </div>
         </Form >
+        <ToastContainer 
+            position="top-right"
+            autoClose={1500}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+        />
     </>
 }
 

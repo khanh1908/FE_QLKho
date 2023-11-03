@@ -55,6 +55,7 @@ const Kho = () => {
   const actionXoa = () =>{
     setToggleXoa(false);
     callXoaKho(idXoa);
+    console.log(callXoaKho(idXoa));
   }
  
   const handleSua = (id) => {

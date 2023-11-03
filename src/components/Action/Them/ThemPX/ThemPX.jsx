@@ -4,7 +4,8 @@ import { message } from 'antd';
 
 import { GetAllSanPhamService } from "../../../../services/SanPham/getAllSanPham";
 import { ThemPXSpService } from "../../../../services/PhieuXuat/AddPhieuXuat";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const ThemPX = ({ setToggle, getAllPhieuXuatRefetch }) => {
     const idUser = localStorage.getItem('idUser');
 
@@ -52,6 +53,10 @@ const ThemPX = ({ setToggle, getAllPhieuXuatRefetch }) => {
     const sum = value.reduce((acc, value) =>{
         return acc + parseFloat(value.gia * value.soluong);
     },0)
+    const formatter = new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND'
+    });
     return <>
         {contextHolder}
         <div className="Form_ADD_PN">
@@ -62,6 +67,21 @@ const ThemPX = ({ setToggle, getAllPhieuXuatRefetch }) => {
                     e.preventDefault()
                     console.log(e.target.price.value);
 
+                    if(e.target.quantity.value <=0 || e.target.price.value <=0)
+                    {
+                        e.preventDefault()
+                        toast.error('Giá trị nhập vào phải lớn hơn 0', {
+                            position: "top-right",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "light",
+                        });
+                    }
+                    else{
                     setValue([...value, {
                         sanpham: {
                             id: productSearch
@@ -69,6 +89,7 @@ const ThemPX = ({ setToggle, getAllPhieuXuatRefetch }) => {
                         gia: e.target.price.value,
                         soluong: e.target.quantity.value
                     }])
+                    }
                 }}>
                     <div style={{ display: 'flex', gap: '20px' }}>
                         <div style={{ minWidth: '120px' }}>San pham</div>
@@ -119,15 +140,15 @@ const ThemPX = ({ setToggle, getAllPhieuXuatRefetch }) => {
                                 <td>{getAllSanPhamResponse?.data?.find((x) => x.id == item.sanpham.id) && getAllSanPhamResponse?.data?.find((x) => x.id == item.sanpham.id).tenSanPham
 
                                 }</td>
-                                <td>{item.gia}</td>
+                                <td>{formatter.format(item.gia)}</td>
                                 <td>{item.soluong}</td>
-                                <td>{item.soluong * item.gia}</td>
+                                <td>{formatter.format(item.soluong * item.gia)}</td>
                             </tr>
                         </>
                     )
                 })}
             </table>
-            <h5 style={{marginTop:'10px'}}>Tổng Tiền : {sum}</h5>
+            <h5 style={{marginTop:'10px'}}>Tổng Tiền :{formatter.format(sum)}</h5>
             <div className="btn_Cancel_Submi button_Bottom">
 
                 <Button onClick={() => { setToggle(false) }} danger >
@@ -138,6 +159,18 @@ const ThemPX = ({ setToggle, getAllPhieuXuatRefetch }) => {
                 </Button>
             </div>
         </div >
+        <ToastContainer 
+            position="top-right"
+            autoClose={1500}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+        />
     </>
 }
 

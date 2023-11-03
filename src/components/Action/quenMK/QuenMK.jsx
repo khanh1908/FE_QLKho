@@ -14,11 +14,18 @@ const QuenMK = ({ setToggle, success }) => {
         if (ForgotPassResponse) {
             if (ForgotPassResponse.success)
                 {
+                    
                     success()
                     setToggle(false);
                 }
                 else {
-                    error();
+                    setTimeout(() => {
+                        error();
+                    }, 2000);
+                    setTimeout(() => {
+                        error();
+                        setToggle(false);
+                    }, 4000);
                 }
         }
         
@@ -33,7 +40,7 @@ const QuenMK = ({ setToggle, success }) => {
     const loading = () => {
         messageApi.open({
           type: 'loading',
-          content: 'Đang gửi mail, xin vui lòng đợi và check lại mail của bạn!..',
+          content: 'Đang kiểm tra thông tin gmail!..',
           duration: 0,
         });
     }
@@ -48,8 +55,9 @@ const QuenMK = ({ setToggle, success }) => {
 
     const handleAddKho = (e) => {
         e.preventDefault();
-        callForgotPassRefetch(formData.email);
         loading()
+        callForgotPassRefetch(formData.email);
+        
     }
 
     const handleChange = (e) => {

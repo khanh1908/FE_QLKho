@@ -38,7 +38,7 @@ const CTKho = ({ error,success,setToggle, ChiTietKhoResponse, idKho, ChiTietKhoC
             error(Messeage_ViTriKho_05)
         }
     },[xoaVTKhoResponse,xoaVTKhoError])
-
+    console.log(ChiTietKhoResponse)
     return <>
         <Form
             name="basic"
@@ -55,6 +55,7 @@ const CTKho = ({ error,success,setToggle, ChiTietKhoResponse, idKho, ChiTietKhoC
                         <th scope="col">Cột</th>
                         <th scope="col">Hàng</th>
                         <th scope="col">Kệ</th>
+                        <th scope="col">Số Lượng</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -66,6 +67,7 @@ const CTKho = ({ error,success,setToggle, ChiTietKhoResponse, idKho, ChiTietKhoC
                                     <th>{value.cot}</th>
                                     <th>{value.hang}</th>
                                     <th>{value.ke}</th>
+                                    <th>{value.soLuong}</th>
                                     <Button onClick={() => handleXoa(value.id)} danger >
                                         Xóa
                                     </Button>
